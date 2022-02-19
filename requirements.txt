@@ -1,0 +1,15 @@
+(1) Dowload the full text of the King James Bible.  You can get a plain text version, but you might prefer the greater structure of an EPUB-formatted version (no images).  Both are available here. 
+
+(2) Write a program in C++ (compiled via gcc) to determine the relative frequency of a word, or a combination of words, in a user-selected range of text.  This is exactly what the Google ngram application does over all the books Google has access to in Google books.   Your program should take in a word/phrase as a string and the range of text.  The latter should be expressed something like this:
+
+range = [r0, r1]
+
+where r0  is the start point for the search, and r1 is the end point, each expressed as a triad {Book, Chapter, Verse}.  Your program should output the frequency of the exact word/phrase entered by the user in average number of appearances per 1000 words (a real-valued (float) output).  For example,  a function call within your program could look like this:
+
+[wordOrPhraseFrequency] = evaluateFrequency(wordOrPhrase, range)
+
+(3) After you've done this, extend your program so that it can automatically find (a) some word or phrase that seems to be evenly distributed across the Bible, and (b) another word or phrase whose relative frequency varies a great deal depending on where you look.  Make a chart for both the words/phrases showing the relative frequency as a function of where you are in the Bible (e.g., by page number or word number).
+
+In estimating the variance of the frequency of a given word or phrase, make sure to work sequentially with big enough blocks of text so that the frequency estimates are reliable.  For example, you may wish to look at the frequency of a word or phrase within an entire book in the Old or New Testaments, provided the book is of sufficient length.  So, for example, you could find the frequency of "desolation" within Isaiah and compare with its frequency in Genesis, Exodous, ...  ,Revelation.   
+
+(4) Once you're finished with the coding, prepare a PDF write-up with some graphs and commentary describing the results.  Put everything on a GitHub repo so I can download it and compile it.  Please include a Makefile with which I can build and make the project.  Or, even better, include the appropriate CMakeLists.txt files so I can use cmake to automatically build a makefile.  
