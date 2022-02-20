@@ -27,6 +27,8 @@ struct Verse {
 
 ostream &operator<<(ostream &os, const Verse &item);
 
+string remove_space(string str);
+
 template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
   os << '[';
   for (auto it = v.begin(); it != v.end(); ++it) {
@@ -54,8 +56,6 @@ private:
   string getLine();
 
   vector<string> getBookList();
-
-  string remove_space(string str);
 
   template <typename T> bool contains(const vector<T> &v, const T &item) {
     return find(v.begin(), v.end(), item) != v.end();

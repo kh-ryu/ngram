@@ -53,7 +53,7 @@ std::vector<string> TxtParser::getBookList() {
 
   return book_name_list;
 }
-std::string TxtParser::remove_space(string str) {
+std::string remove_space(string str) {
   auto it = remove(str.begin(), str.end(), ' ');
   str.erase(it, str.end());
 
@@ -94,6 +94,7 @@ std::vector<Verse> TxtParser::parseVerses(const string &book,
     int chapter = stoi(it->str(1));
     int verse = stoi(it->str(2));
     string content = it->str(3);
+	replace(content.begin(), content.end(), '\n', ' ');
 
     verse_list.push_back(Verse(book, chapter, verse, content));
   }
