@@ -28,6 +28,7 @@ void TxtParser::skipPrologue() {
 std::string TxtParser::getLine() {
   string buffer;
   getline(ifs, buffer);
+  
   if (!buffer.empty() && buffer.back() == '\r') {
     buffer.erase(buffer.end() - 1);
   }

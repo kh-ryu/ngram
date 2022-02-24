@@ -9,6 +9,10 @@ Argument ArgumentParser::parse() {
   if (contains("-h") || contains("--help")) {
     printHelpAndExit();
   }
+  else if (args.size() != 4) {
+    cout << "Input Error!" << endl;
+    exit(100);
+  }
 
   Argument argument;
   argument.start = parseRange(args[1]);
