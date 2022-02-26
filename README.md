@@ -5,8 +5,8 @@ The King James Version of the Bible includes 39 books of the Old Testament and t
 Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Gutenberg website [Link](https://www.gutenberg.org/ebooks/10)
 
 ### Installation
-`git clone https://github.com/kh-ryu/ngram.git
-cmake
+`git clone https://github.com/kh-ryu/ngram.git \\
+cmake \\
 make`
 
 ### Manual
