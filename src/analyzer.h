@@ -15,7 +15,6 @@ public:
 
   Analyzer(const vector<Verse> &verses);
 
-  // use KMP algorithm for finding single string
   double evaluateFrequency(const string &phrase, Triad start, Triad last);
 
   // use Aho-Corasick Algorithm for finding multiple strings

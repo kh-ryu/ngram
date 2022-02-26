@@ -6,14 +6,8 @@ Analyzer::Analyzer(const vector<Verse> &verses) : verses(verses) {}
 
 double Analyzer::evaluateFrequency(const string &phrase, Triad start,
                                    Triad last) {
-  get<0>(start) = remove_space(get<0>(start));
-  get<0>(last) = remove_space(get<0>(last));
-
-  auto text = mergeVerses(start, last);
-  auto count = match(text, phrase).size();
-  auto n_words = countWords(text);
-
-  return count * 1000. / n_words;
+	vector<string> phrases { phrase };
+	return evaluateFrequency(phrases, start, last).at(phrase);
 }
 
 map<string, double> Analyzer::evaluateFrequency(const vector<string> &phrases, Triad start,
