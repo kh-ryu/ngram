@@ -15,6 +15,8 @@ public:
     Node* fail;
     Node();
     void addcount();
+
+    ~Node();
 };
 
 class Trie {
@@ -22,6 +24,7 @@ private:
     Node* root;
 public:
     Trie();
+    ~Trie();
 
     void insert(const string &target);
 

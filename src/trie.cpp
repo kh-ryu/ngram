@@ -104,3 +104,15 @@ int Trie::getWordcount(const string &target) {
 
     return result;
 }
+
+Trie::~Trie() { delete root; }
+
+Node::~Node() {
+  for (auto it : container) {
+    if (!it) {
+      continue;
+    }
+    delete it;
+  }
+}
+
