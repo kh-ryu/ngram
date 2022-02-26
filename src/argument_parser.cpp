@@ -8,26 +8,32 @@ ArgumentParser::ArgumentParser(int argc, const char *argv[]) {
 Argument ArgumentParser::parse() {
   if (contains("-h") || contains("--help")) {
     printHelpAndExit();
-  }
-  else if (args.size() != 4) {
+  } else if (args.size() != 5) {
     cout << "Input Error!" << endl;
-    exit(100);
+    printHelpAndExit(100);
   }
 
   Argument argument;
-  argument.start = parseRange(args[1]);
-  argument.last = parseRange(args[2]);
-  argument.phrase = args[3];
+  argument.path = args[1];
+  try {
+    argument.start = parseRange(args[2]);
+    argument.last = parseRange(args[3]);
+  } catch (const regex_error &err) {
+    cerr << "Error occurred while parsing ranges" << endl
+         << "Reason: " << err.what() << endl;
+    exit(10);
+  }
+  argument.phrase = args[4];
 
   return argument;
 }
-void ArgumentParser::printHelpAndExit() {
+void ArgumentParser::printHelpAndExit(int exitcode) {
   cout << "Usage: " << args[0]
-       << " <start range> <end range> <word or phrase>\n"
+       << " <file path> <start range> <end range> <word or phrase>\n"
        << "\trange: [start, end]\n"
        << "\trange format: 'book name,chapter,verse'\n";
 
-  exit(0);
+  exit(exitcode);
 }
 bool ArgumentParser::contains(const string &str) {
   return find(args.begin(), args.end(), str) != args.end();

@@ -11,6 +11,7 @@
 using namespace std;
 
 struct Argument {
+  string path;
   Triad start;
   Triad last;
   string phrase;
@@ -22,7 +23,7 @@ class ArgumentParser {
 public:
   ArgumentParser(int argc, const char *argv[]);
   Argument parse();
-  void printHelpAndExit();
+  void printHelpAndExit(int exitcode = 0);
 
 private:
   bool contains(const string &str);

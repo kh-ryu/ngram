@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 
-  cmake . && make && ./ngram "Ezra,1,1" "Malachi,4,5" "god"
+  cmake . && make -j8 && ./ngram ./input/pg10.txt "Ezra,1,1" "Malachi,4,5" "god"
+

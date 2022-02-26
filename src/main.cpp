@@ -16,7 +16,7 @@ int main(int argc, const char *argv[]) {
   auto args = ArgumentParser(argc, argv).parse();
 
   /* Read txt file and parse each verses */
-  auto verses = TxtParser("input/pg10.txt").getVerses();
+  auto verses = TxtParser(args.path).getVerses();
   cout << verses.at(0).content << endl;
 
   /* Ready for searching word or phrase in the range */
