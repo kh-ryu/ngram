@@ -6,27 +6,28 @@ TermFrequency::TermFrequency(const vector<Verse> &verse) {
 }
 
 void TermFrequency::findTerms() {
-    Trie* allwords = new Trie();
 
-    auto BookLengthList = getBookLengthList();
+    auto bookLengthList = getBookLengthList();
     cout << "Book Length" << endl;
 
-    auto word_var = getWord(BookLengthList, allwords);
+    auto wordVarList = getWordWithVarList(bookLengthList);
     cout << "word map" << endl;
 
     // 5 evenly distributed word/phrases
-    for (auto it = word_var.begin(); it < word_var.begin() + 5; ++it){
+    for (auto it = wordVarList.begin(); it < wordVarList.begin() + 5; ++it){
         cout << it->first << " " << it->second << endl;
     }
-    for (auto it = word_var.end() - 1; it > word_var.end() - 6; --it){
+    for (auto it = wordVarList.end() - 1; it > wordVarList.end() - 6; --it){
         cout << it->first << " " << it->second << endl;
     }
 }
 
-vector<pair<string, double>> TermFrequency::getWord
-(const vector<Triad> &BookLengthList, Trie* trie) {
-    vector<pair<string, double>> word_var;
-    for (auto it = BookLengthList.begin(); it != BookLengthList.end(); ++it) {
+vector<pair<string, double>> TermFrequency::getWordWithVarList
+(const vector<Triad> &bookLengthList) {
+    vector<pair<string, double>> wordVarList;
+	Trie allWords;
+	
+    for (auto it = bookLengthList.begin(); it != bookLengthList.end(); ++it) {
         cout << "Book: " << get<0>(*it) << endl;
         cout << "Chapter: " << get<1>(*it) << endl; 
         cout << "Verse: " << get<2>(*it) << endl;
@@ -38,34 +39,34 @@ vector<pair<string, double>> TermFrequency::getWord
         Triad start = {bookName, 1, 1};
         Triad end = {bookName, endChapter, endVerse};
 
-        string content = process(analyzer.mergeVerses(start, end));
+        string content = normalize(analyzer.mergeVerses(start, end));
 
-        vector<string> words = WordsandPhrases(content);
-        vector<string> buffer;
+        vector<string> words = getWordsAndPhrases(content);
+        vector<string> newWordsInBook;
         for (auto word : words) {
-            if (!trie->search(word)) { // if word does not exist in trie
-                buffer.push_back(word);
-                trie->insert(word);
+            if (!allWords.search(word)) { // if word does not exist in trie
+                newWordsInBook.push_back(word);
+                allWords.insert(word);
             }
         }
-        auto var = freqVariance(buffer, BookLengthList);
-        word_var.insert(word_var.end(), var.begin(), var.end());
+        auto var = getFreqVariance(newWordsInBook, bookLengthList);
+        wordVarList.insert(wordVarList.end(), var.begin(), var.end());
     }
 
     // sort by size of variance
-    sort(word_var.begin(), word_var.end(), cmp);
+    sort(wordVarList.begin(), wordVarList.end(), cmp);
     // not interested in words that mean frequency is smaller than 5.0
-    for (auto it = word_var.begin(); it != word_var.end(); ++it) {
+    for (auto it = wordVarList.begin(); it != wordVarList.end(); ++it) {
         if (it->second < 0.0) {
-            word_var.erase(it);
+            wordVarList.erase(it);
         }
         else break;
     }
-    return word_var;
+    return wordVarList;
 }
 
-vector<pair<string, double>> TermFrequency::freqVariance(const vector<string> &buffer, const vector<Triad> &BookLengthList) {
-    map<string, vector<double>> word_frequencies;
+vector<pair<string, double>> TermFrequency::getFreqVariance(const vector<string> &buffer, const vector<Triad> &BookLengthList) {
+    map<string, vector<double>> wordFrequencies;
 
     for (auto it = BookLengthList.begin(); it != BookLengthList.end(); ++it){
         string bookName = get<0>(*it);
@@ -80,11 +81,11 @@ vector<pair<string, double>> TermFrequency::freqVariance(const vector<string> &b
         for (auto it : freq) {
             auto str = it.first;
             auto frequency = it.second;
-            auto iter = word_frequencies.find(str);
-            if (iter == word_frequencies.end()) {  // cannot find str
+            auto iter = wordFrequencies.find(str);
+            if (iter == wordFrequencies.end()) {  // cannot find str
                 vector<double> temp;
                 temp.push_back(frequency);
-                word_frequencies[str] = temp;
+                wordFrequencies[str] = temp;
             }
             else {
                 auto temp = iter->second;
@@ -93,16 +94,16 @@ vector<pair<string, double>> TermFrequency::freqVariance(const vector<string> &b
             }
         }
     }
-    if (word_frequencies.size() != buffer.size()){
+    if (wordFrequencies.size() != buffer.size()){
         cout << "something missed during function freqVariance" << endl;
         exit(100);
     }
 
-    int totalWords = (int)word_frequencies.size();
+    int totalWords = (int)wordFrequencies.size();
     int totalBooks = (int)BookLengthList.size();
 
-    vector<pair<string, double>> word_var;
-    for (auto it = word_frequencies.begin(); it != word_frequencies.end(); ++it){
+    vector<pair<string, double>> wordVarList;
+    for (auto it = wordFrequencies.begin(); it != wordFrequencies.end(); ++it){
         double sum = 0.0;
         auto freqPerBook = it->second;
         for (auto j = freqPerBook.begin(); j != freqPerBook.end(); ++j)
@@ -118,14 +119,14 @@ vector<pair<string, double>> TermFrequency::freqVariance(const vector<string> &b
             }
             Var = Var / totalBooks;
         }
-        word_var.push_back({it->first, Var});
+        wordVarList.push_back({it->first, Var});
     }
 
-    return word_var;
+    return wordVarList;
 }
 
 pair<double, double> 
-TermFrequency::freqMeanVariance (const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses) {
+TermFrequency::getFreqMeanVariance (const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses) {
     
     vector<double> frequencies;
     Triad start = {"TheFirstBookofMoses:CalledGenesis", 1, 1};
@@ -158,17 +159,17 @@ TermFrequency::freqMeanVariance (const string &word, const vector<Triad> &BookLe
     return {frequencyMean, freqVar};
 }
 
-vector<string> TermFrequency::WordsandPhrases(const string &content) {
+vector<string> TermFrequency::getWordsAndPhrases(const string &content) {
     vector<string> contentWords = divideIntoWords(content);
     vector<string> wordAndPhrases;
     string word;
 
     // consider phrases with maximum 2 words
     for (auto it = contentWords.begin(); it != contentWords.end(); ++it) {
-        word = process(*it);
+        word = normalize(*it);
         wordAndPhrases.push_back(*it);
         if (it+1 != contentWords.end()) {
-            word = process(*it + " " + *(it+1));
+            word = normalize(*it + " " + *(it+1));
             wordAndPhrases.push_back(word);
         }
     }
@@ -182,7 +183,7 @@ vector<string> TermFrequency::divideIntoWords(const string &content) {
     stringstream ss(content);
 
     while(ss >> word) {
-        auto processedWord = process(word);
+        auto processedWord = normalize(word);
         verseInWords.push_back(processedWord);
     }
 
@@ -203,7 +204,7 @@ vector<Triad> TermFrequency::getBookLengthList() {
     return BookLengthList;
 }
 
-string TermFrequency::process(const string &raw) {
+string TermFrequency::normalize(const string &raw) {
     string word = raw;
 
     // uncapitalize
