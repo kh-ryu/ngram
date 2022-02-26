@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/algorithm/string.hpp>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -29,6 +30,7 @@ ostream &operator<<(ostream &os, const Verse &item);
 
 string remove_space(string str);
 
+/*
 template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
   os << '[';
   for (auto it = v.begin(); it != v.end(); ++it) {
@@ -39,6 +41,7 @@ template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
   }
   return os << ']';
 }
+*/
 
 class TxtParser {
   vector<Verse> verse_list;

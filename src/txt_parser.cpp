@@ -76,7 +76,10 @@ TxtParser::splitByBook(const vector<string> &book_name_list) {
     if (contains(book_name_list, unspaced_line)) {
       // new book
       book_list.push_back({unspaced_line, ""});
-    } else {
+    } else if(!line.empty()){
+      if(!book_list.back().second.empty()){
+        book_list.back().second.append(" ");
+      }
       // Appends verses into the current book.
       book_list.back().second.append(line);
     }
@@ -95,7 +98,6 @@ std::vector<Verse> TxtParser::parseVerses(const string &book,
     int chapter = stoi(it->str(1));
     int verse = stoi(it->str(2));
     string content = it->str(3);
-	replace(content.begin(), content.end(), '\n', ' ');
 
     verse_list.push_back(Verse(book, chapter, verse, content));
   }

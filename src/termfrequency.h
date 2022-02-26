@@ -13,6 +13,7 @@ using namespace std;
 
 class TermFrequency {
     vector<Verse> verses;
+    Analyzer analyzer;
 
 public:
     TermFrequency(const vector<Verse> &verse);
@@ -25,14 +26,16 @@ private:
     vector<Triad> getBookLengthList();
     
     // return words and phrases(less than 3 words) can be found in a verse
-    vector<string> WordsandPhrases(const Verse &verse);
+    vector<string> WordsandPhrases(const string &content);
 
     // divide the content of a verse into words
-    vector<string> divideIntoWords(const Verse &verse);
+    vector<string> divideIntoWords(const string &content);
 
-    void getWord(const vector<Triad> &BookLengthList, const vector<Verse> &verses, Trie* trie);
+    vector<pair<string, double>> getWord(const vector<Triad> &BookLengthList, Trie* trie);
 
     pair<double, double> freqMeanVariance(const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses);
+
+    vector<pair<string, double>> freqVariance(const vector<string> &buffer, const vector<Triad> &BookLengthList);
 
     string process(const string &raw);
 
@@ -40,3 +43,5 @@ private:
     return find(v.begin(), v.end(), item) != v.end();
     }
 };
+
+bool cmp(const pair<string,double> &a, const pair<string,double> &b);

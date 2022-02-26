@@ -1,16 +1,20 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #define ALPHABET_SIZE 27 // 26 alphabets + space
+
+using namespace std;
 
 class Node {
 public:
     bool isEnd;
-    double freqMean;
-    double freqVar;
+    int wordcount;
     Node* container[ALPHABET_SIZE];
+    Node* fail;
     Node();
+    void addcount();
 };
 
 class Trie {
@@ -19,7 +23,13 @@ private:
 public:
     Trie();
 
-    void insert(const std::string &target, const double &mean, const double &var);
+    void insert(const string &target);
 
-    bool search(const std::string &target);
+    bool search(const string &target);
+
+    Node* getroot();
+
+    void fail();
+
+    int getWordcount(const string &target);
 };
