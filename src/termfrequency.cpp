@@ -24,7 +24,7 @@ void TermFrequency::findTerms() {
 
 vector<pair<string, double>> TermFrequency::getWordWithVarList
 (const vector<Triad> &bookLengthList) {
-    vector<pair<string, double>> wordVarList;
+    vector<pair<string, double>> wordRSDList;
 	Trie allWords;
 	
     for (auto it = bookLengthList.begin(); it != bookLengthList.end(); ++it) {
@@ -50,19 +50,10 @@ vector<pair<string, double>> TermFrequency::getWordWithVarList
             }
         }
         auto var = getFreqRSD(newWordsInBook, bookLengthList);
-        wordVarList.insert(wordVarList.end(), var.begin(), var.end());
+        wordRSDList.insert(wordRSDList.end(), var.begin(), var.end());
     }
 
-    // sort by size of variance
-    sort(wordVarList.begin(), wordVarList.end(), cmp);
-    // not interested in words that mean frequency is smaller than 5.0
-    for (auto it = wordVarList.begin(); it != wordVarList.end(); ++it) {
-        if (it->second < 0.0) {
-            wordVarList.erase(it);
-        }
-        else break;
-    }
-    return wordVarList;
+    return wordRSDList;
 }
 
 vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &buffer, const vector<Triad> &BookLengthList) {
@@ -124,40 +115,6 @@ vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &buf
     }
 
     return wordVarList;
-}
-
-pair<double, double> 
-TermFrequency::getFreqMeanVariance (const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses) {
-    
-    vector<double> frequencies;
-    Triad start = {"TheFirstBookofMoses:CalledGenesis", 1, 1};
-    Triad end = {"TheRevelationofSaintJohntheDivine", 22, 21};
-    auto frequencyMean = analyzer.evaluateFrequency(word, start, end);
-    double freqVar = 0.0;
-
-    if (frequencyMean > 5.0) {
-        cout << word << endl;
-        for (auto book : BookLengthList) {
-            string bookName = get<0>(book);
-            int endChapter = get<1>(book);
-            int endVerse = get<2>(book);
-
-            start = {bookName, 1, 1};
-            end = {bookName, endChapter, endVerse};
-
-            double freq = analyzer.evaluateFrequency(word, start, end);
-            frequencies.push_back(freq);
-        }
-        vector<double> diff(frequencies.size());
-        transform(frequencies.begin(), frequencies.end(), diff.begin(), [frequencyMean](double x) {return x - frequencyMean;});
-        auto sq_sum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-        freqVar = sq_sum/frequencies.size();
-    }
-    else {
-        frequencyMean = 0.0;
-        freqVar = 0.0;
-    }
-    return {frequencyMean, freqVar};
 }
 
 vector<string> TermFrequency::getWordsAndPhrases(const string &content) {

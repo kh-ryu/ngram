@@ -33,8 +33,6 @@ private:
 
     vector<pair<string, double>> getWordWithVarList(const vector<Triad> &BookLengthList);
 
-    pair<double, double> getFreqMeanVariance(const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses);
-
     vector<pair<string, double>> getFreqRSD(const vector<string> &buffer, const vector<Triad> &BookLengthList);
 
     string normalize(const string &raw);
