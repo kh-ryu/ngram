@@ -54,8 +54,7 @@ std::vector<string> TxtParser::getBookList() {
   return book_name_list;
 }
 std::string remove_space(string str) {
-  auto it = remove(str.begin(), str.end(), ' ');
-  str.erase(it, str.end());
+  str.erase(remove(str.begin(), str.end(), ' '), str.end());
 
   return str;
 }

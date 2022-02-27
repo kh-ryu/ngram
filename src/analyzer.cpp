@@ -54,58 +54,19 @@ std::string Analyzer::mergeVerses(const Triad &start, const Triad &last) {
   return buffer;
 }
 
-std::vector<int> Analyzer::calculate_pi(const string &pattern) {
-  vector<int> pi(pattern.size());
-  pi[0] = -1;
-  int j = -1;
-
-  for (int i = 1; i < pattern.size(); ++i) {
-    while (j >= 0 && pattern[i] != pattern[j + 1])
-      j = pi[j];
-
-    if (pattern[i] == pattern[j + 1])
-      pi[i] = ++j;
-    else
-      pi[i] = -1;
-  }
-
-  return pi;
-}
-
-std::vector<int> Analyzer::match(string text, string pattern) {
-  vector<int> positions;
-  if (pattern.empty())
-    return positions;
-
-  auto pi = calculate_pi(pattern);
-
-  int j = -1;
-  for (int i = 0; i < text.size(); ++i) {
-    while (j >= 0 && text[i] != pattern[j + 1])
-      j = pi[j];
-
-    if (text[i] == pattern[j + 1]) {
-      j++;
-      if (j + 1 == pattern.size()) {
-        positions.push_back(i - j);
-        j = pi[j];
-      }
-    }
-  }
-
-  return positions;
-}
-
-map<string, int> Analyzer::aho_corasick(const string &text, const vector<string> &phrases) {
+map<string, int> Analyzer::aho_corasick(const string &text, const vector<string> &words) {
   Trie* trie = new Trie();
   auto root = trie->getroot();
   auto cursor = root;
 
-  map<string, int> wordcount; 
+  map<string, int> wordcount;
+  vector<string> spacedWords;
+  for (auto it : words){
+    spacedWords.push_back(" " + it + " ");
+  }
 
-  for (auto it : phrases) {
+  for (auto it : spacedWords) {
     trie->insert(it);
-    wordcount.insert({it, 0});
   }
 
   trie->fail();
@@ -128,9 +89,12 @@ map<string, int> Analyzer::aho_corasick(const string &text, const vector<string>
     }
   }
 
-  for (auto it : phrases) {
+  for (auto it : spacedWords) {
     int num = trie->getWordcount(it);
-    wordcount[it] = num;
+    auto restoredWord = it;
+    restoredWord.erase(restoredWord.begin());
+    restoredWord.erase(restoredWord.end()-1);
+    wordcount[restoredWord] = num;
   }
   delete trie;
   return wordcount;

@@ -25,16 +25,7 @@ public:
 private:
   unsigned int countWords(const string &str);
 
-  vector<int> calculate_pi(const string &pattern);
-
-  /**
-   * Finds indices where the pattern exists using KMP algorithm.
-   *
-   * For additional requirements, consider using Aho-Corasick algorithm
-   */
-  vector<int> match(string text, string pattern);
-
-  map<string, int> aho_corasick(const string &text, const vector<string> &phrases);
+  map<string, int> aho_corasick(const string &text, const vector<string> &words);
 
   string normalize(const string &raw);
 };

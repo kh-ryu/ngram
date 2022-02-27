@@ -31,7 +31,7 @@ private:
     // divide the content of a verse into words
     vector<string> divideIntoWords(const string &content);
 
-    vector<pair<string, double>> getWordWithVarList(const vector<Triad> &BookLengthList);
+    vector<pair<string, double>> getWordWithRSDList(const vector<Triad> &BookLengthList);
 
     vector<pair<string, double>> getFreqRSD(const vector<string> &buffer, const vector<Triad> &BookLengthList);
 
