@@ -11,9 +11,11 @@ double Analyzer::evaluateFrequency(const string &phrase, Triad start,
 }
 
 map<string, double> Analyzer::evaluateFrequency(const vector<string> &phrases, Triad start,
-                                   Triad last) {
+                                   Triad last) {                                  
+  get<0>(start) = remove_space(get<0>(start));
+  get<0>(last) = remove_space(get<0>(last));
 
-  auto text = process(mergeVerses(start, last));
+  auto text = normalize(mergeVerses(start, last));
   auto count = aho_corasick(text, phrases);
   auto n_words = countWords(text);
 
@@ -134,7 +136,7 @@ map<string, int> Analyzer::aho_corasick(const string &text, const vector<string>
   return wordcount;
 }
 
-string Analyzer::process(const string &raw) {
+string Analyzer::normalize(const string &raw) {
     string word = raw;
 
     // uncapitalize

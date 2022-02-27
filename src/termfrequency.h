@@ -35,7 +35,7 @@ private:
 
     pair<double, double> getFreqMeanVariance(const string &word, const vector<Triad> &BookLengthList, const vector<Verse> &verses);
 
-    vector<pair<string, double>> getFreqVariance(const vector<string> &buffer, const vector<Triad> &BookLengthList);
+    vector<pair<string, double>> getFreqRSD(const vector<string> &buffer, const vector<Triad> &BookLengthList);
 
     string normalize(const string &raw);
 

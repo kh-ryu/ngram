@@ -36,5 +36,5 @@ private:
 
   map<string, int> aho_corasick(const string &text, const vector<string> &phrases);
 
-  string process(const string &raw);
+  string normalize(const string &raw);
 };

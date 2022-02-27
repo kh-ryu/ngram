@@ -45,7 +45,6 @@ std::vector<string> TxtParser::getBookList() {
     }
     string unspaced_buffer = remove_space(buffer);
     if (contains(book_name_list, unspaced_buffer)) {
-      // book_list.push_back({no_space_buf,""});
       ifs.seekg(old_position);
       break;
     }

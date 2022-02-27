@@ -49,7 +49,7 @@ vector<pair<string, double>> TermFrequency::getWordWithVarList
                 allWords.insert(word);
             }
         }
-        auto var = getFreqVariance(newWordsInBook, bookLengthList);
+        auto var = getFreqRSD(newWordsInBook, bookLengthList);
         wordVarList.insert(wordVarList.end(), var.begin(), var.end());
     }
 
@@ -65,7 +65,7 @@ vector<pair<string, double>> TermFrequency::getWordWithVarList
     return wordVarList;
 }
 
-vector<pair<string, double>> TermFrequency::getFreqVariance(const vector<string> &buffer, const vector<Triad> &BookLengthList) {
+vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &buffer, const vector<Triad> &BookLengthList) {
     map<string, vector<double>> wordFrequencies;
 
     for (auto it = BookLengthList.begin(); it != BookLengthList.end(); ++it){
@@ -119,7 +119,8 @@ vector<pair<string, double>> TermFrequency::getFreqVariance(const vector<string>
             }
             Var = Var / totalBooks;
         }
-        wordVarList.push_back({it->first, Var});
+        double RSD = sqrt(Var) / Mean;
+        wordVarList.push_back({it->first, RSD});
     }
 
     return wordVarList;

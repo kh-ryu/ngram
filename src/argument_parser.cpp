@@ -24,6 +24,7 @@ Argument ArgumentParser::parse() {
     exit(10);
   }
   argument.phrase = args[4];
+  cout << "start chapter" << get<0>(argument.start) << endl;
 
   return argument;
 }
@@ -39,7 +40,7 @@ bool ArgumentParser::contains(const string &str) {
   return find(args.begin(), args.end(), str) != args.end();
 }
 Triad ArgumentParser::parseRange(const string &str) {
-  regex pattern("(\\w+),(\\d+),(\\d+)");
+  regex pattern("([\\w\\s:]*),(\\d+),(\\d+)");
   sregex_iterator iter(str.begin(), str.end(), pattern);
 
   return {iter->str(1), stoi(iter->str(2)), stoi(iter->str(3))};
