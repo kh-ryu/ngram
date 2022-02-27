@@ -24,7 +24,6 @@ Argument ArgumentParser::parse() {
     exit(10);
   }
   argument.phrase = args[4];
-  cout << "start chapter" << get<0>(argument.start) << endl;
 
   return argument;
 }

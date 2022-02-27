@@ -1,11 +1,13 @@
 #include <iostream>
 #include <ostream>
+#include <time.h>
 
 #include "analyzer.h"
 #include "argument_parser.h"
 #include "txt_parser.h"
 #include "termfrequency.h"
 #include "trie.h"
+#include "datawriter.h"
 
 using namespace std;
 
@@ -17,7 +19,6 @@ int main(int argc, const char *argv[]) {
 
   /* Read txt file and parse each verses */
   auto verses = TxtParser(args.path).getVerses();
-  cout << verses.at(0).content << endl;
 
   /* Ready for searching word or phrase in the range */
   auto analyzer = Analyzer(verses);
@@ -31,6 +32,38 @@ int main(int argc, const char *argv[]) {
        << analyzer.evaluateFrequency(args.phrase, args.start, args.last) // Calculate frequency of each word or phrase
        << endl;
 
-  auto search = TermFrequency(verses);
-  search.findTerms();
+  string cont;
+  cout << "**************************************************************" << endl;
+  cout << "Do you want to search words or phrases that are evenly/unevenly distributed?" << endl;
+  cout << "Please type \"yes\" if you want to search and continue" << endl;
+  cin >> cont;
+
+  pair<vector<string> ,vector<string>> words;
+  if (cont == "yes"){
+    int num;
+    cout << "enter the number of words you want to find (less than 10)" << endl;
+    cin >> num;
+    cout << "Searching..." << endl;
+    auto search = TermFrequency(verses);
+    words = search.findTerms(num);
+  }
+
+  string data;
+  cout << "***************************************************************" << endl;
+  cout << "If you want to save frequencies of those words, please type \"yes\" " << endl;
+  cout << "Warning: it can take quite a long time" << endl;
+  cin >> data;
+  if (data == "yes"){
+    cout << "Saving data" << endl;
+    auto t = time(nullptr);
+    auto tm = localtime(&t);
+    char datetime[20];
+    strftime(datetime, 20, "%F %H:%M", tm);
+    string head(datetime);
+
+    auto write = DataWriter(head, verses, words);
+    write.saveData();
+  }
+
+  cout << "Thank you" << endl;
 }

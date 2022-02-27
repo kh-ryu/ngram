@@ -19,12 +19,12 @@ public:
     TermFrequency(const vector<Verse> &verse);
 
     // Find terms those are evenly or unevenly distributed
-    void findTerms();
+    pair<vector<string>, vector<string>> findTerms(const int &wordnum);
 
-private:
     // return the list of Books and their last chapter, verse
     vector<Triad> getBookLengthList();
-    
+
+private:   
     // return words and phrases(less than 3 words) can be found in a verse
     vector<string> getWordsAndPhrases(const string &content);
 

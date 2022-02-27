@@ -5,26 +5,30 @@ TermFrequency::TermFrequency(const vector<Verse> &verse) {
     analyzer = Analyzer(verse);
 }
 
-void TermFrequency::findTerms() {
+pair<vector<string>, vector<string>> TermFrequency::findTerms(const int &wordnum) {
 
     auto bookLengthList = getBookLengthList();
-    cout << "Book Length" << endl;
-
     auto wordRSDList = getWordWithRSDList(bookLengthList);
-    cout << "word map" << endl;
 
-    // 5 evenly distributed words/phrases
-    for (int i = 0; i < 5; i++) {
+    vector<string> unevenWords;
+    cout << wordnum << " unevenly distributed words/phrases" << endl;
+    for (int i = 0; i < wordnum; i++) {
         auto it = max_element(wordRSDList.begin(), wordRSDList.end(), cmp);
         cout << "word: " << it->first << "    RSD: " << it->second << endl;
+        unevenWords.push_back(it->first);
         wordRSDList.erase(it);
     }
-    // 5 unevenly distributed words/phrases
-    for (int i = 0; i < 5; i++) {
+
+    vector<string> evenWords;
+    cout << wordnum << " evenly distributed words/phrases" << endl;
+    for (int i = 0; i < wordnum; i++) {
         auto it = min_element(wordRSDList.begin(), wordRSDList.end(), cmp);
         cout << "word: " << it->first << "    RSD: " << it->second << endl;
+        evenWords.push_back(it->first);
         wordRSDList.erase(it);
     }
+
+    return {unevenWords, evenWords};
 }
 
 vector<pair<string, double>> TermFrequency::getWordWithRSDList
