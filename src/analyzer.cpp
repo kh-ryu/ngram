@@ -47,7 +47,6 @@ std::string Analyzer::mergeVerses(const Triad &start, const Triad &last) {
   auto end = find_if(verses.begin(), verses.end(), comparator(last)) + 1;
 
   for (auto it = beg; it != end; ++it) {
-    // buffer.append(" ");
     buffer.append(it->content);
   }
 
@@ -94,7 +93,7 @@ map<string, int> Analyzer::aho_corasick(const string &text, const vector<string>
     auto restoredWord = it;
     restoredWord.erase(restoredWord.begin());
     restoredWord.erase(restoredWord.end()-1);
-    wordcount[restoredWord] = num;
+    wordcount.insert({restoredWord, num});
   }
   delete trie;
   return wordcount;

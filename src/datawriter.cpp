@@ -8,30 +8,36 @@ DataWriter::DataWriter(const string &givenhead, const vector<Verse> &givenverses
     words = givenwords;
 }
 
-void DataWriter::saveData(){
+void DataWriter::saveData(int fast){
     auto unevenWords = words.first;
     auto evenWords = words.second;
 
+    cout << "Saving unevenly distributed Words" << endl;
     writeFreqPerBook(unevenWords, "uneven");
-    writeAccumulatedFreq(unevenWords, "uneven");
+
+    cout << "Saving evenly distributed words" << endl;
     writeFreqPerBook(evenWords, "even");
-    writeAccumulatedFreq(evenWords, "even");
+
+    if(fast == 2){
+        writeFreqPerChapter(unevenWords, "uneven");
+        writeFreqPerChapter(evenWords, "even");
+    }
 }
 
 void DataWriter::writeFreqPerBook(const vector<string> &words, string name){
-    ofstream ofs(head + "_" + name + "_FreqPerBook.csv");
+    ofstream ofs("./data/" + head + "_" + name + "_FreqPerBook.csv");
 
-    for (auto word : words){
-        ofs << word << ",";
+    for (auto i = words.begin(); i != words.end(); ++i){
+        ofs << *i << ",";
     }
     ofs << '\n';
 
     auto bookLengthList = TermFrequency(verses).getBookLengthList();
 
-    for (auto book : bookLengthList) {
-        string bookName = get<0>(book);
-        int endChapter = get<1>(book);
-        int endVerse = get<2>(book);
+    for (auto it = bookLengthList.begin(); it != bookLengthList.end(); ++it) {
+        string bookName = get<0>(*it);
+        int endChapter = get<1>(*it);
+        int endVerse = get<2>(*it);
 
         Triad start = {bookName, 1, 1};
         Triad end = {bookName, endChapter, endVerse};
@@ -39,7 +45,8 @@ void DataWriter::writeFreqPerBook(const vector<string> &words, string name){
         auto freqThisBook = analyzer.evaluateFrequency(words, start, end);
 
         for (auto i = words.begin(); i != words.end(); ++i){
-            ofs << to_string(freqThisBook[*i]) << ",";
+            string word = *i;
+            ofs << to_string(freqThisBook.at(word)) << ",";
         }
         ofs << '\n';
     }
@@ -47,30 +54,32 @@ void DataWriter::writeFreqPerBook(const vector<string> &words, string name){
     ofs.close();
 }
 
-void DataWriter::writeAccumulatedFreq(const vector<string> &words, string name){
-    ofstream ofs(head + "_" + name + "_AccumulatedFreq.csv");
+void DataWriter::writeFreqPerChapter(const vector<string> &words, string name){
+    ofstream ofs("./data/" + head + "_" + name + "_AccumulatedFreq.csv");
 
-    for (auto word : words){
-                ofs << word << ",";
+    for (auto i = words.begin(); i != words.end(); ++i){
+        ofs << *i << ",";
     }
     ofs << '\n';
 
-    Triad start = {verses.at(0).book, verses.at(0).chapter, verses.at(0).verse};
-    int Chapter = 0;
     for (int i = 0; i < verses.size(); ++i) {
-        string bookName = verses.at(i).book;
-        int Verse = verses.at(i).verse;
+        int Chapter = verses.at(i).chapter;
 
-        if (Chapter != verses.at(i).chapter){
-            Chapter = verses.at(i).chapter;
+        if (Chapter != verses.at(i+1).chapter){
+            string bookName = verses.at(i).book;
+            int Verse = verses.at(i).verse;
+
+            Triad start = {bookName, Chapter, 1};
             Triad end = {bookName, Chapter, Verse};
 
             auto AccumulatedFreq = analyzer.evaluateFrequency(words, start, end);
 
             for (auto i = words.begin(); i != words.end(); ++i){
-                ofs << to_string(AccumulatedFreq[*i]) << ",";
+                string word = *i;
+                ofs << to_string(AccumulatedFreq.at(word)) << ",";
             }
             ofs << '\n';
+            Chapter = verses.at(i).chapter;
         }
     }
 

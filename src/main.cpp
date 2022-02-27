@@ -54,15 +54,19 @@ int main(int argc, const char *argv[]) {
   cout << "Warning: it can take quite a long time" << endl;
   cin >> data;
   if (data == "yes"){
+    int fast;
+    cout << "1. Save frequency per book" << endl;
+    cout << "2. Save frequency per book & frequency per each chapter" << endl;
+    cin >> fast;
     cout << "Saving data" << endl;
     auto t = time(nullptr);
     auto tm = localtime(&t);
     char datetime[20];
-    strftime(datetime, 20, "%F %H:%M", tm);
+    strftime(datetime, 20, "%F %H_%M", tm);
     string head(datetime);
 
     auto write = DataWriter(head, verses, words);
-    write.saveData();
+    write.saveData(fast);
   }
 
   cout << "Thank you" << endl;

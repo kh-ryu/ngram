@@ -20,10 +20,10 @@ public:
     DataWriter(const string &givenhead, const vector<Verse> &givenverses, 
                 const pair<vector<string>, vector<string>> &givenwords);
 
-    void saveData();
+    void saveData(int fast);
 
 private:
     void writeFreqPerBook(const vector<string> &words, string name);
 
-    void writeAccumulatedFreq(const vector<string> &words, string name);
+    void writeFreqPerChapter(const vector<string> &words, string name);
 };

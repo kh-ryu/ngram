@@ -85,12 +85,12 @@ vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &wor
             if (iter == wordFrequencies.end()) {  // cannot find str
                 vector<double> temp;
                 temp.push_back(frequency);
-                wordFrequencies[str] = temp;
+                wordFrequencies.insert({str, temp});
             }
             else {
-                auto temp = iter->second;
+                auto temp = wordFrequencies.at(str);
                 temp.push_back(frequency);
-                iter->second = temp;
+                wordFrequencies.at(str) = temp;
             }
         }
     }
@@ -110,7 +110,7 @@ vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &wor
             sum += (*j);
         auto Mean = sum / totalBooks;
         
-        if (Mean > 0.5) {
+        if (Mean > 1.0) {
             double Var = 0.0;
             for (auto j = freqPerBook.begin(); j != freqPerBook.end(); ++j) {
                 Var += ((*j) - Mean)*((*j) - Mean);
@@ -146,15 +146,13 @@ vector<string> TermFrequency::divideIntoWords(const string &content) {
     vector<string> verseInWords;
 
     stringstream ss(content);
-    ofstream output("output.txt");
 
     while(getline(ss, word, ' ')) {
         auto processedWord = remove_space(normalize(word));
         if (!processedWord.empty())
             verseInWords.push_back(processedWord);
-        output << word << '\n';
     }
-    output.close();
+
     return verseInWords;
 }
 

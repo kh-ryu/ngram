@@ -6,7 +6,8 @@ Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Guten
 
 ### Installation
     git clone https://github.com/kh-ryu/ngram.git
-    cmake
+    cd ngram
+    cmake .
     make
 
 ### Manual
