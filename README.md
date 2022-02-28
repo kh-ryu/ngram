@@ -11,7 +11,11 @@ Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Guten
     make
     ./ngram ./input/pg10.txt "startBook,startChapter,startVerse" "endBook,endChapter,endVerse" "word/phrase"
 
-If you want to just test the file, run bash script.
+Example of execution line is as follows
+
+    ./ngram ./input/pg10.txt "The First Book of Moses: Called Genesis,1,1" "Ezra,2,5" "god"
+
+If you want to just test the file, you can use bash script.
 
     git clone https://github.com/kh-ryu/ngram.git
     cd ngram
