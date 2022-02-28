@@ -29,7 +29,7 @@ This receive 4 arguments.
 3. End range of search in the format of "endBook,endChapter,endVerse"
 4. Word or phrase that you want to search
 
-If you need information about input argument, use `./ngram -help`.
+If you need information about input argument, use `./ngram -h`.
 You can have the Book Name, Chapter number, and verse number in [here](https://www.gutenberg.org/files/10/10-h/10-h.htm#The_First_Book_of_Samuel)
 
 After computing the frequency of given word/phrase in given range, 
