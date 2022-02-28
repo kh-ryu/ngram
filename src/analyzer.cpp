@@ -44,7 +44,12 @@ std::string Analyzer::mergeVerses(const Triad &start, const Triad &last) {
   };
 
   auto beg = find_if(verses.begin(), verses.end(), comparator(start));
-  auto end = find_if(verses.begin(), verses.end(), comparator(last)) + 1;
+  auto end = find_if(verses.begin(), verses.end(), comparator(last));
+  if (beg == verses.end() || end == verses.end()){
+    cout << "Range input Error! Please check existence of Book, Chapter, Verse in the Bible" << endl;
+    exit(100);
+  }
+  end = end + 1;
 
   for (auto it = beg; it != end; ++it) {
     buffer.append(it->content);
