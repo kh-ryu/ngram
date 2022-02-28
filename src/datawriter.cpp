@@ -57,7 +57,7 @@ void DataWriter::writeFreqPerBook(const vector<string> &words, string name){
 }
 
 void DataWriter::writeFreqPerChapter(const vector<string> &words, string name){
-    ofstream ofs("./data/" + head + "_" + name + "_AccumulatedFreq.csv");
+    ofstream ofs("./data/" + head + "_" + name + "_FreqPerChap.csv");
 
     for (auto i = words.begin(); i != words.end(); ++i){
         ofs << *i << ",";
