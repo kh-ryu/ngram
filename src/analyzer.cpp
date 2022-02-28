@@ -12,12 +12,13 @@ double Analyzer::evaluateFrequency(const string &phrase, Triad start,
 
 map<string, double> Analyzer::evaluateFrequency(const vector<string> &phrases, Triad start,
                                    Triad last) {                                  
+  // remove space of book name to handle different spacing of them
   get<0>(start) = remove_space(get<0>(start));
   get<0>(last) = remove_space(get<0>(last));
 
-  auto text = normalize(mergeVerses(start, last));
-  auto count = aho_corasick(text, phrases);
-  auto n_words = countWords(text);
+  auto text = normalize(mergeVerses(start, last));  // merge contents in the range and normalize them
+  auto count = aho_corasick(text, phrases);         // use Aho_Corasick algorithm to count the words
+  auto n_words = countWords(text);                  // count all words in the text
 
   map<string, double> result;
 
@@ -104,6 +105,7 @@ map<string, int> Analyzer::aho_corasick(const string &text, const vector<string>
   return wordcount;
 }
 
+/* remove punctuation mark and change to lower cases */
 string Analyzer::normalize(const string &raw) {
     string word = raw;
 

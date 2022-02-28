@@ -27,6 +27,7 @@ Argument ArgumentParser::parse() {
 
   return argument;
 }
+/* print help*/
 void ArgumentParser::printHelpAndExit(int exitcode) {
   cout << "Usage: " << args[0]
        << " <file path> <start range> <end range> <word or phrase>\n"
@@ -35,9 +36,11 @@ void ArgumentParser::printHelpAndExit(int exitcode) {
 
   exit(exitcode);
 }
+/* check wheather args contains str */
 bool ArgumentParser::contains(const string &str) {
   return find(args.begin(), args.end(), str) != args.end();
 }
+/* parse given range using regular expression */
 Triad ArgumentParser::parseRange(const string &str) {
   regex pattern("([\\w\\s:]*),(\\d+),(\\d+)");
   sregex_iterator iter(str.begin(), str.end(), pattern);

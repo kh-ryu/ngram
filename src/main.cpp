@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, const char *argv[]) {
   cout << "Start" << endl;
   
-  /* Receive range and word/phrase for searching */
+  /* Receive search range and word/phrase for searching */
   auto args = ArgumentParser(argc, argv).parse();
 
   /* Read txt file and parse each verses */
@@ -32,6 +32,7 @@ int main(int argc, const char *argv[]) {
        << analyzer.evaluateFrequency(args.phrase, args.start, args.last) // Calculate frequency of each word or phrase
        << endl;
 
+  /* Automatically finding word distribution */
   string cont;
   cout << "**************************************************************" << endl;
   cout << "Do you want to search words or phrases that are evenly/unevenly distributed?" << endl;
@@ -48,6 +49,7 @@ int main(int argc, const char *argv[]) {
     words = search.findTerms(num);
   }
 
+  /* save frequency data */
   string data;
   cout << "***************************************************************" << endl;
   cout << "If you want to save frequencies of those words, please type \"yes\" " << endl;

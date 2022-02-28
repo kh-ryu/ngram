@@ -17,14 +17,15 @@ TxtParser::TxtParser(const string &filename) : ifs(filename) {
   }
 }
 
-vector<Verse> TxtParser::getVerses() { return verse_list; }
-
+/* skip the prologue before "*** START OF THE PROJECT GUTENBERG EBOOK THE KING JAMES BIBLE ***" */
 void TxtParser::skipPrologue() {
   until(getLine() ==
         "*** START OF THE PROJECT GUTENBERG EBOOK THE KING JAMES BIBLE ***") {
     ; // Do nothing
   }
 }
+
+/* Handle the different newline charachter of Windows system and Linux system */
 std::string TxtParser::getLine() {
   string buffer;
   getline(ifs, buffer);
@@ -34,6 +35,8 @@ std::string TxtParser::getLine() {
   }
   return buffer;
 }
+
+/* Return the list of Book names */
 std::vector<string> TxtParser::getBookList() {
   vector<string> book_name_list;
   while (true) {
@@ -53,11 +56,13 @@ std::vector<string> TxtParser::getBookList() {
 
   return book_name_list;
 }
+
 std::string remove_space(string str) {
   str.erase(remove(str.begin(), str.end(), ' '), str.end());
-
   return str;
 }
+
+/* split by book and return the vector<Book name, Book content> */
 std::vector<pair<string, string>>
 TxtParser::splitByBook(const vector<string> &book_name_list) {
   vector<pair<string, string>> book_list;
@@ -66,7 +71,7 @@ TxtParser::splitByBook(const vector<string> &book_name_list) {
     string line;
     line = getLine();
     if (line ==
-        "*** END OF THE PROJECT GUTENBERG EBOOK THE KING JAMES BIBLE ***") {
+        "*** END OF THE PROJECT GUTENBERG EBOOK THE KING JAMES BIBLE ***") { // similar with skipping prologue
       break;
     }
     string unspaced_line = remove_space(line);
@@ -84,6 +89,8 @@ TxtParser::splitByBook(const vector<string> &book_name_list) {
   }
   return book_list;
 }
+
+/* find each verse using regular expression, parse them */
 std::vector<Verse> TxtParser::parseVerses(const string &book,
                                           const string &body) {
   vector<Verse> verses;
@@ -101,3 +108,5 @@ std::vector<Verse> TxtParser::parseVerses(const string &book,
   }
   return verses;
 }
+
+vector<Verse> TxtParser::getVerses() { return verse_list; }

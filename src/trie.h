@@ -7,6 +7,7 @@
 
 using namespace std;
 
+/* refer https://gwlabs.tistory.com/51 for detailed explanation about trie data structure */
 class Node {
 public:
     bool isEnd;

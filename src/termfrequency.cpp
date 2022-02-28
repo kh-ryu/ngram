@@ -30,7 +30,7 @@ pair<vector<string>, vector<string>> TermFrequency::findTerms(const int &wordnum
 
     return {unevenWords, evenWords};
 }
-
+/* return vector<word, RSD> of all the words */
 vector<pair<string, double>> TermFrequency::getWordWithRSDList
 (const vector<Triad> &bookLengthList) {
     vector<pair<string, double>> wordRSDList;
@@ -50,10 +50,10 @@ vector<pair<string, double>> TermFrequency::getWordWithRSDList
 
         string content = normalize(analyzer.mergeVerses(start, end));
 
-        vector<string> words = getWordsAndPhrases(content);
+        vector<string> words = getWordsAndPhrases(content);             // get all words and phrases in the book
         vector<string> newWordsInBook;
         for (auto word : words) {
-            if (!allWords.search(word)) { // if word does not exist in trie
+            if (!allWords.search(word)) {                               // if word does not exist in trie
                 newWordsInBook.push_back(word );
                 allWords.insert(word);
             }
@@ -87,7 +87,7 @@ vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &wor
                 temp.push_back(frequency);
                 wordFrequencies.insert({str, temp});
             }
-            else {
+            else {                                // if str already exist in map wordFrequencies
                 auto temp = wordFrequencies.at(str);
                 temp.push_back(frequency);
                 wordFrequencies.at(str) = temp;
@@ -110,7 +110,7 @@ vector<pair<string, double>> TermFrequency::getFreqRSD(const vector<string> &wor
             sum += (*j);
         auto Mean = sum / totalBooks;
         
-        if (Mean > 1.0) {
+        if (Mean > 1.0) {  // only intersted in words/phrases that mean frequency is greater than 1.0
             double Var = 0.0;
             for (auto j = freqPerBook.begin(); j != freqPerBook.end(); ++j) {
                 Var += ((*j) - Mean)*((*j) - Mean);
@@ -140,7 +140,7 @@ vector<string> TermFrequency::getWordsAndPhrases(const string &content) {
     }
     return wordAndPhrases;
 }
-
+/* divide string into words (use space) */
 vector<string> TermFrequency::divideIntoWords(const string &content) {
     string word;
     vector<string> verseInWords;
@@ -156,7 +156,7 @@ vector<string> TermFrequency::divideIntoWords(const string &content) {
     return verseInWords;
 }
 
-
+/* get vector<Book name, end Chapter, end Verse> */ 
 vector<Triad> TermFrequency::getBookLengthList() {
     vector<Triad> BookLengthList;
 
