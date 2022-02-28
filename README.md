@@ -9,6 +9,7 @@ Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Guten
     cd ngram
     cmake .
     make
+    ./ngram ./input/pg10.txt "startBook,startChapter,startVerse" "endBook,endChapter,endVerse" "word/phrase"
 
 ### Manual
 This receive 4 arguments.  
@@ -18,6 +19,10 @@ This receive 4 arguments.
 3. End range of search in the format of "endBook,endChapter,endVerse"
 4. Word or phrase that you want to search
 
-`./ngram ./input/pg10.txt "startBook,startChapter,startVerse" "endBook,endChapter,endVerse" "word/phrase"`
-
 If you need information about input argument, use `./ngram -help`.
+
+After computing the frequency of given word/phrase in given range, 
+you will be asked whether you will continue to automatically search evenly/unevenly distributed words/phrases.
+
+Lastly, after searching words, you can save frequency of those words per each Book/Chapter.
+The data will be saved as csv file.
