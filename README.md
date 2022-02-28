@@ -11,6 +11,11 @@ Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Guten
     make
     ./ngram ./input/pg10.txt "startBook,startChapter,startVerse" "endBook,endChapter,endVerse" "word/phrase"
 
+If you want to just test the file, run bash script.
+    git clone https://github.com/kh-ryu/ngram.git
+    cd ngram
+    bash run_example.sh
+
 ### Manual
 This receive 4 arguments.  
 
@@ -20,6 +25,7 @@ This receive 4 arguments.
 4. Word or phrase that you want to search
 
 If you need information about input argument, use `./ngram -help`.
+You can have the Book Name, Chapter number, and verse number in [here](https://www.gutenberg.org/files/10/10-h/10-h.htm#The_First_Book_of_Samuel)
 
 After computing the frequency of given word/phrase in given range, 
 you will be asked whether you will continue to automatically search evenly/unevenly distributed words/phrases.
