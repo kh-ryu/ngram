@@ -12,6 +12,7 @@ Its eBook files in HTML, ePub, Kindle, or txt file can be found in Project Guten
     ./ngram ./input/pg10.txt "startBook,startChapter,startVerse" "endBook,endChapter,endVerse" "word/phrase"
 
 If you want to just test the file, run bash script.
+
     git clone https://github.com/kh-ryu/ngram.git
     cd ngram
     bash run_example.sh
