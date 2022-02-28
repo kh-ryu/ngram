@@ -51,7 +51,6 @@ int main(int argc, const char *argv[]) {
   string data;
   cout << "***************************************************************" << endl;
   cout << "If you want to save frequencies of those words, please type \"yes\" " << endl;
-  cout << "Warning: it can take quite a long time" << endl;
   cin >> data;
   if (data == "yes"){
     int fast;

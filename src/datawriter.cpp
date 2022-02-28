@@ -19,7 +19,9 @@ void DataWriter::saveData(int fast){
     writeFreqPerBook(evenWords, "even");
 
     if(fast == 2){
+        cout << "Saving unevenly distributed Words(Frequency Per Chapter)" << endl;
         writeFreqPerChapter(unevenWords, "uneven");
+        cout << "Saving evenly distributed Words(Frequency Per Chapter)" << endl;
         writeFreqPerChapter(evenWords, "even");
     }
 }
@@ -65,7 +67,7 @@ void DataWriter::writeFreqPerChapter(const vector<string> &words, string name){
     for (int i = 0; i < verses.size(); ++i) {
         int Chapter = verses.at(i).chapter;
 
-        if (Chapter != verses.at(i+1).chapter){
+        if (Chapter != verses[i+1].chapter){
             string bookName = verses.at(i).book;
             int Verse = verses.at(i).verse;
 
@@ -75,11 +77,9 @@ void DataWriter::writeFreqPerChapter(const vector<string> &words, string name){
             auto AccumulatedFreq = analyzer.evaluateFrequency(words, start, end);
 
             for (auto i = words.begin(); i != words.end(); ++i){
-                string word = *i;
-                ofs << to_string(AccumulatedFreq.at(word)) << ",";
+                ofs << to_string(AccumulatedFreq.at(*i)) << ",";
             }
             ofs << '\n';
-            Chapter = verses.at(i).chapter;
         }
     }
 
